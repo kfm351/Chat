@@ -1,0 +1,50 @@
+﻿@page "/registration"
+@using BlazorApp2.Components
+@rendermode InteractiveServer
+
+<PageTitle>Registration</PageTitle>
+
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <label for="LoginInput">Enter new login</label>
+        <input id="LoginInput" @bind="_login"/>
+        <label for="PasswordInput">Enter new password</label>
+        <input type="password" id="PasswordInput" @bind="_password" />
+        <label for="PasswordConfirmInput">Confirm password</label>
+        <input type="password" id="PasswordConfirmInput" @bind="_confirmPassword" />
+        <button type="button" class="btn btn-lg btn-outline-secondary my-2" @onclick="Register">Register</button>
+        <label>@_</label>
+        <br />
+        <a href="/" class="card-link">Enter existing account</a>
+    </div>
+</div>
+
+@code {
+    private string _login = "";
+    private string _password = "";
+    private string _confirmPassword = "";
+    private string _;
+
+    private void Register()
+    {
+        _ = "";
+        if(_login == "" || _password == "" || _confirmPassword == "") {
+            _ = "Заполните все поля!";
+            return;
+        }
+        foreach(var u in AccountList.Users) {
+            if (_login == u.Login) {
+                _ = "Аккаунт с таким логином уже существует";
+                return;
+            }
+        }
+
+        if(_password != _confirmPassword) {
+            _ = "Пароли не совпадают";
+            return;
+        }
+
+        AccountList.Update(new User(_login, _password));
+        _ = "Успешно!";
+    }
+}

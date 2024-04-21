@@ -1,0 +1,48 @@
+﻿@page "/"
+@using BlazorApp2.Components
+@rendermode InteractiveServer
+
+<PageTitle>Login</PageTitle>
+
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <label for="LoginInput">Enter new login</label>
+        <input id="LoginInput" @bind="_login" />
+        <label for="PasswordInput">Enter new password</label>
+        <input type="password" id="PasswordInput" @bind="_password" />
+        <button type="button" class="btn btn-lg btn-outline-secondary my-2" @onclick="Login">Login</button>
+        <br />
+        <label>@_</label>
+        <a href="/registration" class="card-link">Enter existing account</a>
+    </div>
+</div>
+
+@code{
+    private string _login = "";
+    private string _password = "";
+    private string _;
+
+    private void Login() {
+        _ = "";
+        if(_login == "" || _password == "")
+        {
+            _ = "Заполните все поля";
+            return;
+        }
+
+        foreach(var u in AccountList.Users)
+        {
+            if (_login == u.Login && _password == u.Password)
+            {
+                _ = "Успешно!";
+                return;
+            }
+            if(_login == u.Login)
+            {
+                _ = "Неверный пароль";
+                return;
+            }
+        }
+        _ = "Аккаунта с таким логином не существует";
+    }
+}
